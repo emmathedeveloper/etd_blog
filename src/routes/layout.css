@@ -64,8 +64,16 @@
         @apply my-4 first:mt-0 last:mb-0 leading-relaxed;
       }
     
+      h1 , h2 , h3 {
+        @apply font-instrument mt-8 mb-4 first:mt-0 last:mb-0;
+      }
+      
       h1 {
-        @apply text-[24px] md:text-[48px] font-instrument mt-8 mb-4 first:mt-0 last:mb-0;
+          @apply text-[24px] md:text-[48px]
+      }
+      
+      h2 {
+          @apply text-[20px] md:text-[40px]
       }
     }
 }
