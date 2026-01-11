@@ -1,0 +1,71 @@
+@import 'tailwindcss';
+
+
+[data-theme="morning"]{
+    --primary: #7F809F;
+    --accent: #F7CDAA;
+    --base: #FFFFFF;
+    --background: #FFFFFF;
+    --foreground: #1E1E1E;
+    
+    --gradient-start: #E6C2BA;
+    
+    --image: url('/backgrounds/morning.png');
+}
+
+[data-theme="afternoon"]{
+    --primary: #1F81C3;
+    --accent: #FFFFFF;
+    --base: #FFFFFF;
+    --background: #FFFFFF;
+    --foreground: #1E1E1E;
+    
+    --gradient-start: #9AB9D1;
+    
+    --image: url('/backgrounds/afternoon.png');
+}
+
+[data-theme="night"]{
+    --primary: #1D1741;
+    --accent: #1D1741;
+    --base: #FFFFFF;
+    --background: #FFFFFF;
+    --foreground: #1E1E1E;
+    
+    --gradient-start: #CECAD3;
+    
+    --image: url('/backgrounds/night.png');
+}
+
+
+@theme {
+    --color-primary: var(--primary);
+    --color-accent: var(--accent);
+    --color-base: var(--base);
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-gradient-start: var(--gradient-start);
+    
+    --font-instrument: "Instrument Serif" , serif;
+    --font-bricolage: "Bricolage Grotesque Variable" , sans-serif;
+}
+
+@layer base {
+    body , html , body > div {
+        @apply bg-background text-foreground font-bricolage min-h-svh scroll-smooth
+    }
+    button {
+        @apply cursor-pointer
+    }
+    
+    .tiptap {
+        
+      p {
+        @apply my-4 first:mt-0 last:mb-0 leading-relaxed;
+      }
+    
+      h1 {
+        @apply text-[24px] md:text-[48px] font-instrument mt-8 mb-4 first:mt-0 last:mb-0;
+      }
+    }
+}
