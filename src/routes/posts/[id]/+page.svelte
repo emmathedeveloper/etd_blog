@@ -3,6 +3,9 @@
 	import Background from '../../../components/background.svelte';
 	import { GithubIcon, TwitterIcon } from 'lucide-svelte';
 	import { formatDate } from '$lib';
+	import { onMount } from 'svelte';
+	import { siteState } from '$lib/store.svelte';
+	import Footer from '../../../components/footer.svelte';
 
 	let { data }: PageProps = $props();
 
@@ -10,11 +13,29 @@
 
 	let hasScrolled = $state(false);
 
+	let hasScrolledToBottom = $state(false);
+
 	const handleScroll = (e: UIEvent) => {
-		const { scrollTop } = e.target as HTMLDivElement;
+		const { scrollTop, scrollHeight , clientHeight } = e.target as HTMLDivElement;
 
 		hasScrolled = scrollTop > 100;
+
+		hasScrolledToBottom = scrollTop >= scrollHeight;
+
+		console.log((scrollHeight - clientHeight) , scrollTop)
+		
+		if (scrollTop >= (scrollHeight - clientHeight)) {
+			siteState.footerHidden = false;
+		}else{
+			siteState.footerHidden = true;
+		}
 	};
+
+	onMount(() => {
+		siteState.footerHidden = true;
+
+		return () => (siteState.footerHidden = false);
+	});
 </script>
 
 <main class="relative h-svh w-full">
@@ -58,5 +79,6 @@
 				{@html data.post.content}
 			</div>
 		</div>
+		<Footer />
 	</section>
 </main>

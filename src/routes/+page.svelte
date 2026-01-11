@@ -3,6 +3,7 @@
     import { formatDate } from '$lib';
 	import { ArrowRightIcon } from 'lucide-svelte';
 	import Hero from '../components/sections/landing/hero.svelte';
+	import Footer from '../components/footer.svelte';
 	
 	let { data } : PageProps = $props()
 </script>
@@ -35,3 +36,5 @@
     	</div>
     </section>
 {/each}
+
+<Footer />
