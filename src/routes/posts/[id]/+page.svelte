@@ -56,7 +56,7 @@
 	<meta name="twitter:description" content="Personal Blog for emmathedeveloper" />
 	<meta
 		name="twitter:image"
-		content={page.url.origin + `/backgrounds/${getTimeOfDay()}`}
+		content={page.url.origin + `/backgrounds/${getTimeOfDay()}.png`}
 	/>
 </svelte:head>
 
