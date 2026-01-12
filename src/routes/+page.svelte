@@ -8,6 +8,10 @@
 	let { data } : PageProps = $props()
 </script>
 
+<svelte:head>
+	<title>etd_blog</title>
+</svelte:head>
+
 <Hero post={data.posts[0]} />
 
 {#each data.posts.slice(1) as post , i}

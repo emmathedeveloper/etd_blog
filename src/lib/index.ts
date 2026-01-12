@@ -40,4 +40,13 @@ export async function uploadFile(event: Event) {
 		});
 
 		const data = await res.json();
-	}
+}
+	
+export const randomTheme = () => {
+  
+  const items = ['morning', 'night', 'afternoon']
+  
+  const chosen = items[Math.floor(Math.random() * items.length)]
+  
+  return chosen
+}

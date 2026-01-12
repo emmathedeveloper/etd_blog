@@ -2,10 +2,11 @@
 	import type { PageProps } from './$types';
 	import Background from '../../../components/background.svelte';
 	import { GithubIcon, PencilIcon, TwitterIcon } from 'lucide-svelte';
-	import { formatDate } from '$lib';
+	import { formatDate, getTimeOfDay, randomTheme } from '$lib';
 	import { onMount } from 'svelte';
 	import { siteState } from '$lib/store.svelte';
 	import Footer from '../../../components/footer.svelte';
+	import { page } from '$app/state';
 
 	let { data }: PageProps = $props();
 
@@ -42,20 +43,20 @@
 	<title>etd_blog | {data.post.title}</title>
 	<meta name="description" content="Personal Blog for emmathedeveloper" />
 
-	<meta name="og:url" content={window.location.origin} />
+	<meta name="og:url" content={page.url.origin} />
 	<meta name="og:title" content={data.post.title} />
 	<meta name="og:description" content="Personal Blog for emmathedeveloper" />
 	<meta name="og:type" content="website" />
-	<meta name="og:image" content={data.post.poster} />
+	<meta name="og:image" content={page.url.origin + `/backgrounds/${getTimeOfDay()}`} />
 
 	<meta name="twitter:card" content="summary_large_image" />
-	<meta property="twitter:domain" content={window.location.host}/>
-	<meta property="twitter:url" content={window.location.origin} />
+	<meta property="twitter:domain" content={page.url.host}/>
+	<meta property="twitter:url" content={page.url.origin} />
 	<meta name="twitter:title" content={data.post.title} />
 	<meta name="twitter:description" content="Personal Blog for emmathedeveloper" />
 	<meta
 		name="twitter:image"
-		content={data.post.poster}
+		content={page.url.origin + `/backgrounds/${getTimeOfDay()}`}
 	/>
 </svelte:head>
 
