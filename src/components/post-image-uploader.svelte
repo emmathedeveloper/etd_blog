@@ -1,7 +1,17 @@
 <script lang="ts">
-	import { LaptopMinimalIcon, PencilIcon, UploadCloudIcon } from 'lucide-svelte';
+	import { urlToFile } from '$lib';
+	import { LaptopMinimalIcon, PencilIcon , UploadCloudIcon } from 'lucide-svelte';
+	import { onMount } from 'svelte';
 
-	const { onImageChange }: { onImageChange?: (file: File | null) => void } = $props();
+	const {
+		onImageChange,
+		initialFile,
+		onLoad
+	}: {
+		onImageChange?: (file: File | null) => void;
+		initialFile?: File | string | null;
+		onLoad?: (file: File | null) => void;
+	} = $props();
 
 	let inputEl = $state<HTMLInputElement | null>(null);
 
@@ -9,33 +19,15 @@
 
 	let displayUrl = $state<string | null>(null);
 
-	async function uploadFile(event: Event) {
-		const input = event.target as HTMLInputElement;
-		if (!input.files?.length) return;
-
-		const formData = new FormData();
-		formData.append('file', input.files[0]);
-
-		const res = await fetch('/api/upload', {
-			method: 'POST',
-			body: formData
-		});
-
-		const data = await res.json();
-		console.log(data);
-	}
-
 	const handleFileChange = async (event: Event) => {
 		try {
 			const input = event.target as HTMLInputElement;
 			if (!input.files?.length) return;
 
 			const file = input.files[0];
-			const base64 = await toBase64(file);
 
 			selectedFile = file;
-			displayUrl = base64 as string;
-			
+
 			onImageChange?.(file);
 		} catch (e) {
 			console.error(e);
@@ -50,6 +42,21 @@
 			reader.onerror = (error) => reject(error);
 		});
 	};
+
+	$effect(() => {
+		if (selectedFile) toBase64(selectedFile).then((url) => (displayUrl = url as string));
+	});
+
+	onMount(() => {
+	
+	    if(!initialFile) return
+	
+		if (typeof initialFile == 'string') {
+			urlToFile(initialFile, 'poster').then((file) => (selectedFile = file));
+		} else {
+			selectedFile = initialFile;
+		}
+	});
 </script>
 
 <div

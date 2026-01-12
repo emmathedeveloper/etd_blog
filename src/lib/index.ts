@@ -20,3 +20,24 @@ export const getGreeting = () => {
   if (timeOfDay === "afternoon") return "Good afternoon";
   return "Good evening";
 }
+
+export async function urlToFile(url: string, filename: string) {
+  const res = await fetch(url);
+  const blob = await res.blob();
+  return new File([blob], filename, { type: blob.type });
+}
+
+export async function uploadFile(event: Event) {
+		const input = event.target as HTMLInputElement;
+		if (!input.files?.length) return;
+
+		const formData = new FormData();
+		formData.append('file', input.files[0]);
+
+		const res = await fetch('/api/upload', {
+			method: 'POST',
+			body: formData
+		});
+
+		const data = await res.json();
+	}

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageProps } from './$types';
 	import Background from '../../../components/background.svelte';
-	import { GithubIcon, TwitterIcon } from 'lucide-svelte';
+	import { GithubIcon, PencilIcon, TwitterIcon } from 'lucide-svelte';
 	import { formatDate } from '$lib';
 	import { onMount } from 'svelte';
 	import { siteState } from '$lib/store.svelte';
@@ -16,17 +16,17 @@
 	let hasScrolledToBottom = $state(false);
 
 	const handleScroll = (e: UIEvent) => {
-		const { scrollTop, scrollHeight , clientHeight } = e.target as HTMLDivElement;
+		const { scrollTop, scrollHeight, clientHeight } = e.target as HTMLDivElement;
 
 		hasScrolled = scrollTop > 100;
 
 		hasScrolledToBottom = scrollTop >= scrollHeight;
 
-		console.log((scrollHeight - clientHeight) , scrollTop)
-		
-		if (scrollTop >= (scrollHeight - clientHeight)) {
+		console.log(scrollHeight - clientHeight, scrollTop);
+
+		if (scrollTop >= scrollHeight - clientHeight) {
 			siteState.footerHidden = false;
-		}else{
+		} else {
 			siteState.footerHidden = true;
 		}
 	};
@@ -38,6 +38,27 @@
 	});
 </script>
 
+<svelte:head>
+	<title>etd_blog | {data.post.title}</title>
+	<meta name="description" content="Personal Blog for emmathedeveloper" />
+
+	<meta name="og:url" content={window.location.origin} />
+	<meta name="og:title" content={data.post.title} />
+	<meta name="og:description" content="Personal Blog for emmathedeveloper" />
+	<meta name="og:type" content="website" />
+	<meta name="og:image" content={data.post.poster} />
+
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta property="twitter:domain" content={window.location.host}/>
+	<meta property="twitter:url" content={window.location.origin} />
+	<meta name="twitter:title" content={data.post.title} />
+	<meta name="twitter:description" content="Personal Blog for emmathedeveloper" />
+	<meta
+		name="twitter:image"
+		content={data.post.poster}
+	/>
+</svelte:head>
+
 <main class="relative h-svh w-full">
 	<Background class="size-full" />
 	<section
@@ -48,6 +69,10 @@
 		<div class="mx-auto mt-50 min-h-svh w-full max-w-250 rounded-t-4xl bg-white">
 			<header class="flex w-full items-center justify-between px-6 py-2">
 				<a href="/" class="font-instrument text-[32px]">etd_blog</a>
+
+				<a href={`/posts/${data.post.id}/edit`} class="text-primary">
+					<PencilIcon />
+				</a>
 
 				<div class="flex items-center justify-between gap-8">
 					<a target="_blank" href="https://github.com/emmathedeveloper">

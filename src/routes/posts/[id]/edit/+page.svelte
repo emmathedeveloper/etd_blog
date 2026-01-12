@@ -1,7 +1,10 @@
 <script lang="ts">
 	import { CheckIcon, XIcon } from 'lucide-svelte';
-	import PostImageUploader from '../../../components/post-image-uploader.svelte';
-	import Tiptap from '../../../components/editor/tiptap.svelte';
+	import Tiptap from '../../../../components/editor/tiptap.svelte';
+	import PostImageUploader from '../../../../components/post-image-uploader.svelte';
+	import type { PageProps } from '../$types';
+
+	const { data }: PageProps = $props();
 
 	type UploadState = 'idle' | 'uploading' | 'success' | 'error';
 
@@ -9,28 +12,22 @@
 
 	let uploadedPostId = $state<string | null>(null);
 
-	let title = $state(``);
+	let title = $derived(data.post.title);
 
-	let content = $state(`
-        <h1>Hello Svelte! 🌍️ </h1>
-        <p>This editor is running in Svelte.</p>
-        <p>Select some text to see the bubble menu popping up.</p>
-      `);
+	let content = $derived(data.post.content);
 
 	let poster = $state<File | null>(null);
 
 	const handlePost = () => {
-		if (!poster || !title.trim() || !content.trim()) return;
-
 		uploadStateData = { type: 'uploading', message: 'Uploading...' };
 
 		const formData = new FormData();
-		formData.append('poster', poster);
-		formData.append('content', content);
-		formData.append('title', title);
+		if (poster) formData.append('poster', poster);
+		if (title.trim()) formData.append('content', content);
+		if (content.trim()) formData.append('title', title);
 
-		fetch('/api/posts', {
-			method: 'POST',
+		fetch(`/api/posts/${data.post.id}`, {
+			method: 'PATCH',
 			body: formData
 		})
 			.then((response) => response.json())
@@ -43,7 +40,7 @@
 				console.error(error);
 				uploadStateData = {
 					type: 'error',
-					message: (error as Error).message || 'An error occurred while creating the post'
+					message: (error as Error)?.message || 'An error occurred while creating the post'
 				};
 			});
 	};
@@ -64,7 +61,7 @@
 			onclick={handlePost}
 			class="flex items-center gap-2 rounded-full bg-primary px-6 py-2 text-base"
 		>
-			Post
+			Save Changes
 			<CheckIcon />
 		</button>
 	</nav>
@@ -78,7 +75,10 @@
 				class="w-full max-w-200 resize-none text-center text-[32px] font-extrabold text-foreground outline-none md:text-[64px]"
 			></textarea>
 
-			<PostImageUploader onImageChange={(image) => (poster = image)} />
+			<PostImageUploader
+				initialFile={data.post.poster}
+				onImageChange={(image) => (poster = image)}
+			/>
 		</div>
 		<div class="mt-8 flex max-h-100 flex-col px-4 md:mt-16">
 			<Tiptap value={content} onChange={(v) => (content = v)} />
