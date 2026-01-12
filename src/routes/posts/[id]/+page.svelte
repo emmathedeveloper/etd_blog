@@ -47,7 +47,7 @@
 	<meta name="og:title" content={data.post.title} />
 	<meta name="og:description" content="Personal Blog for emmathedeveloper" />
 	<meta name="og:type" content="website" />
-	<meta name="og:image" content={page.url.origin + `/backgrounds/${getTimeOfDay()}`} />
+	<meta name="og:image" content={page.url.origin + `/backgrounds/${getTimeOfDay()}.png`} />
 
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta property="twitter:domain" content={page.url.host}/>
